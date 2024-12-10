@@ -53,6 +53,72 @@ To solve the problem effectively, I employed a combination of advanced deep lear
   - **T-shirts**: Used horizontal flips, rotations, and slight distortions to simulate real-world usage variations.
   - **Kurtis**: Introduced random cropping near the neckline to focus on intricate embroidery details.
   - **Men's Wear**: Augmented textures by applying random sharpness and blur to better capture material differences.
+ 
+# Augmentation Pipeline for Class Imbalance in Image Datasets
+
+This repository provides a Python-based augmentation pipeline to handle class imbalance in image datasets. It uses the Albumentations library to perform various augmentation strategies based on class proportions, ensuring better balance in the dataset for improved model training.
+
+## Features
+- Computes class proportions and applies augmentation strategies to under-represented classes.
+- Supports basic, intermediate, and advanced augmentation pipelines.
+- Balances datasets by generating new augmented images for under-represented classes.
+- Saves augmented data and metadata to a CSV file for further use.
+
+## Augmentation Strategy
+
+### Class Proportion Calculation
+- The function `calculate_class_proportions` computes the frequency of each class in the dataset for a specific attribute (`attr_1`, `attr_2`, ..., `attr_10`).
+- A target frequency is calculated as the mean class count.
+- A multiplier is determined for each class to indicate how much augmentation is needed:
+  - If a class is under-represented, its multiplier will be higher, indicating more augmentation is required.
+  - The multiplier is capped at `3.0` to avoid excessive augmentation for any single class.
+
+### Defining Augmentation Pipelines
+Three augmentation pipelines are defined using Albumentations:
+
+1. **Basic Augmentations**:
+   - Horizontal flipping, vertical flipping, random cropping, and 90-degree rotations.
+2. **Intermediate Augmentations**:
+   - Adjustments to color (brightness, contrast, saturation, hue) and geometric distortions (shift, scale, rotate).
+3. **Advanced Augmentations**:
+   - Techniques like Coarse Dropout, Elastic Transform, and Grid Distortion.
+
+### Augmentation Strategy Based on Multipliers
+- Classes with higher multipliers receive more augmentations and more complex transformations:
+  - **Multiplier > 3.0**: All three augmentation levels are applied.
+  - **Multiplier > 1.5**: Basic and intermediate augmentations are applied.
+  - **Multiplier ≤ 1.5**: Only basic augmentations are applied.
+- The `aug_percentage` determines the fraction of the class's images to augment.
+
+### Selecting Images for Augmentation
+- A subset of images for the target class is selected using `pandas.DataFrame.sample` based on the `aug_percentage`.
+- Each selected image is augmented using the appropriate augmentation pipelines.
+
+### Augmented Image Generation
+- Augmented images are generated using the selected pipelines and saved with unique filenames.
+- A new record corresponding to the augmented image is created by copying metadata from the original record and updating the image filename.
+
+### Combining Original and Augmented Data
+- The original dataset and augmented dataset are concatenated into a single DataFrame.
+- The final DataFrame includes both the original and augmented images, ensuring better class balance.
+
+### Output
+- The augmented dataset is saved to a CSV file (`augmented_train.csv`) in the output directory.
+- The total number of images after augmentation is logged.
+
+## Usage
+1. Set up the input image directory, output directory, and path to the training CSV file.
+2. Run the pipeline to generate augmented images and save the updated dataset.
+
+```python
+if __name__ == "__main__":
+    input_dir = "/path/to/input/images"
+    output_dir = "/path/to/output/images"
+    train_csv_path = "/path/to/train.csv"
+    
+    pipeline = AugmentationPipeline(input_dir, output_dir, train_csv_path)
+    augmented_df = pipeline.run_pipeline()
+
 
 
 3. **Model Architecture**:
