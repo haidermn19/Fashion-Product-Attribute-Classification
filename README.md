@@ -81,7 +81,7 @@ Three augmentation pipelines are defined using Albumentations:
 2. **Intermediate Augmentations**:
    - Adjustments to color (brightness, contrast, saturation, hue) and geometric distortions (shift, scale, rotate).
 3. **Advanced Augmentations**:
-   - Techniques like Coarse Dropout, Elastic Transform, and Grid Distortion.
+   - Techniques like cutmix, mixup.
 
 ### Augmentation Strategy Based on Multipliers
 - Classes with higher multipliers receive more augmentations and more complex transformations:
