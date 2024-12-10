@@ -27,11 +27,33 @@ To solve the problem effectively, I employed a combination of advanced deep lear
    - Normalized images using ImageNet mean and standard deviation values.
    - Imputed missing attributes using predefined 'dummy values' for consistency, especially when fewer attributes were required for specific categories.
 
-2. **Data Augmentation**:
-   To improve the representation of under-represented classes and enhance model generalization, I applied the following augmentation techniques:
-   - **CutMix**: Mixes patches from multiple images to generate new samples, helping the model learn spatially complex patterns.
-   - **MixUp**: Blends two images and their corresponding labels, encouraging the model to be less sensitive to specific image artifacts.
-   - **Category-Specific Augmentations**: Tailored augmentations to specific product categories. For example, augmenting color variations for sarees and applying random flips and rotations for t-shirts.
+2## Detailed Augmentation Techniques
+
+- **Random Crop and Resize**:  
+  Applied to simulate real-world variability in image framing and scaling, improving the model's robustness to different image resolutions.
+
+- **Color Jittering**:  
+  Introduced random changes to brightness, contrast, saturation, and hue to account for varied lighting conditions in product photography.
+
+- **Gaussian Noise Addition**:  
+  Simulated sensor noise to make the model more resilient to low-quality images.
+
+- **Random Erasing**:  
+  Masked random parts of the image to encourage the model to focus on key features rather than irrelevant regions.
+
+- **Perspective Transformations**:  
+  Applied to simulate different viewing angles, making the model robust to perspective changes in images.
+
+- **AugMix**:  
+  Combined multiple augmentations into a single pipeline, diversifying the dataset while maintaining semantic consistency.
+
+- **Category-Aware Augmentations**:  
+  Specific transformations tailored to distinct product categories:
+  - **Sarees**: Enhanced color diversity and added random shearing to mimic fabric flow.
+  - **T-shirts**: Used horizontal flips, rotations, and slight distortions to simulate real-world usage variations.
+  - **Kurtis**: Introduced random cropping near the neckline to focus on intricate embroidery details.
+  - **Men's Wear**: Augmented textures by applying random sharpness and blur to better capture material differences.
+
 
 3. **Model Architecture**:
 I used a combination of state-of-the-art deep learning models, focusing on architectures that excel in visual tasks:
@@ -56,12 +78,11 @@ I used a combination of state-of-the-art deep learning models, focusing on archi
 
 6. **Ensembling**:
    To further enhance prediction accuracy and robustness, I employed the following ensembling techniques:
-   - Combined predictions from Swin Transformer and EfficientNet models using weighted averaging.
+   - Combined predictions from all models using weighted averaging and later on used Siberian Tiger optimization to furthur optimkze the weights.
    - Stacked models trained from different cross-validation folds to reduce variance in predictions.
 
 7. **Model Optimization for Inference**:
    - **ONNX Conversion**: Converted the model to ONNX format for optimized inference speed.
-   - **Quantization**: Applied model quantization to reduce the model size without compromising accuracy.
    - **Batch Inference**: Implemented batch inference to speed up predictions when handling multiple images.
 
 ### Final Model Performance
