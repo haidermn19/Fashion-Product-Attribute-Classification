@@ -37,8 +37,11 @@ To solve the problem effectively, I employed a combination of advanced deep lear
 I used a combination of state-of-the-art deep learning models, focusing on architectures that excel in visual tasks:
 
 **ResNet18:** Chosen for its simplicity and efficiency in extracting deep hierarchical features, making it an ideal base model for ensembling.
+
 **DenseNet121:** Integrated for its feature reuse capability, which ensures efficient use of parameters and enhances gradient flow, crucial for detailed fashion **attribute extraction.
-**EfficientNetB0:** Used as a secondary model for ensembling due to its speed and strong performance in visual classification tasks, achieving a balance between **accuracy and computational efficiency.
+
+**EfficientNetB0:** Used as a secondary model for ensembling due to its speed and strong performance in visual classification tasks, achieving a balance between accuracy and computational efficiency.
+
 **XceptionNet:** Leveraged for its superior performance in handling spatial hierarchies with depthwise separable convolutions, providing detailed feature maps for complex patterns.
 4. **Hyperparameter Tuning**:
    To optimize the model’s performance, I used **Optuna** for hyperparameter tuning. The following parameters were optimized:
